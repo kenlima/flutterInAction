@@ -100,8 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            ElevatedButton(
-              child: Text("Decrement Counter"),
+            PanicButton(
+              display: Text('Decrement Counter'),
               onPressed: _decrementCounter,
             ),
           ],
@@ -115,9 +115,23 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-
   void _decrementCounter() {
     setState(() => _counter--);
+  }
+}
+
+class PanicButton extends StatelessWidget{
+  final Widget display;
+  final VoidCallback onPressed;
+
+  PanicButton({this.display, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      color: Colors.red,
+      child: display,
+      onPressed: onPressed,
+    );
   }
 }
