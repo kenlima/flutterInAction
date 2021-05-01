@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'fancy_button.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -47,20 +49,52 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool _reversed = false;
+  List<UniqueKey> _buttonKeys = [UniqueKey(), UniqueKey()];
 
   void _incrementCounter() {
+    setState(() => _counter++);
+  }
+
+  void _decrementCounter() {
+    setState(() => _counter--);
+  }
+
+  void _resetCounter() {
+    setState(() => _counter = 0);
+    _swap();
+  }
+
+  void _swap() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _reversed = !_reversed;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final incrementButton = FancyButton(
+      child: Text(
+        'Increment',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: _incrementCounter,
+    );
+
+    final decrementButton = FancyButton(
+      child: Text(
+        'Decrement',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: _decrementCounter,
+    );
+
+    List<Widget> _buttons = <Widget>[incrementButton, decrementButton];
+
+    if (_reversed) {
+      _buttons = _buttons.reversed.toList();
+    }
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -114,20 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                PanicButton(
-                  color: Colors.red,
-                  display:
-                      Text('Decrement', style: TextStyle(color: Colors.white)),
-                  onPressed: _decrementCounter,
-                ),
-                PanicButton(
-                  color: Colors.green,
-                  display:
-                      Text('Increment', style: TextStyle(color: Colors.white)),
-                  onPressed: _incrementCounter,
-                ),
-              ],
+              children: _buttons,
             ),
           ],
         ),
@@ -139,29 +160,5 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
-  void _decrementCounter() {
-    setState(() => _counter--);
-  }
-
-  void _resetCounter() {
-    setState(() => _counter = 0);
-  }
 }
 
-class PanicButton extends StatelessWidget {
-  final Color color;
-  final Widget display;
-  final VoidCallback onPressed;
-
-  PanicButton({this.color, this.display, this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return RaisedButton(
-      color: color,
-      child: display,
-      onPressed: onPressed,
-    );
-  }
-}
