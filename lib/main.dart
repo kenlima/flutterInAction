@@ -93,6 +93,18 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(bottom: 100.0),
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              child: Image.asset(
+                'flutter_logo_1080.png',
+                width: 100.0,
+              ),
+            ),
             Text(
               'You have clicked the button this many times:',
             ),
@@ -100,17 +112,30 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            PanicButton(
-              display: Text('Decrement Counter'),
-              onPressed: _decrementCounter,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                PanicButton(
+                  color: Colors.red,
+                  display:
+                      Text('Decrement', style: TextStyle(color: Colors.white)),
+                  onPressed: _decrementCounter,
+                ),
+                PanicButton(
+                  color: Colors.green,
+                  display:
+                      Text('Increment', style: TextStyle(color: Colors.white)),
+                  onPressed: _incrementCounter,
+                ),
+              ],
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        onPressed: _resetCounter,
+        tooltip: 'Reset Counter',
+        child: Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -118,18 +143,23 @@ class _MyHomePageState extends State<MyHomePage> {
   void _decrementCounter() {
     setState(() => _counter--);
   }
+
+  void _resetCounter() {
+    setState(() => _counter = 0);
+  }
 }
 
-class PanicButton extends StatelessWidget{
+class PanicButton extends StatelessWidget {
+  final Color color;
   final Widget display;
   final VoidCallback onPressed;
 
-  PanicButton({this.display, this.onPressed});
+  PanicButton({this.color, this.display, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      color: Colors.red,
+      color: color,
       child: display,
       onPressed: onPressed,
     );
